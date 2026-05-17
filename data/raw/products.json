@@ -1,0 +1,32 @@
+[
+  {
+    "product_id": 1,
+    "product_name": "Laptop",
+    "category": "Electronics",
+    "price": 900.0
+  },
+  {
+    "product_id": 2,
+    "product_name": "Smartphone",
+    "category": "Electronics",
+    "price": 600.0
+  },
+  {
+    "product_id": 3,
+    "product_name": "Office Chair",
+    "category": "Furniture",
+    "price": 150.0
+  },
+  {
+    "product_id": 4,
+    "product_name": "Desk",
+    "category": "Furniture",
+    "price": 250.0
+  },
+  {
+    "product_id": 5,
+    "product_name": "Coffee Machine",
+    "category": "Appliances",
+    "price": 300.0
+  }
+]

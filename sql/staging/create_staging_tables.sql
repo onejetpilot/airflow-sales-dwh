@@ -24,14 +24,14 @@ CREATE TABLE staging.stg_products (
 CREATE TABLE staging.stg_orders (
     order_id INTEGER,
     customer_id INTEGER,
-    produst_id INTEGER,
+    product_id INTEGER,
     order_date DATE,
     quantity INTEGER,
     order_status TEXT
     );
 
 CREATE TABLE staging.stg_payments (
-    paymrnt_id INTEGER,
+    payment_id INTEGER,
     order_id INTEGER,
     payment_date DATE,
     payment_amount NUMERIC(10, 2),
