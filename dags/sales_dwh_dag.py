@@ -11,6 +11,8 @@ with DAG(
     start_date = datetime(2025, 1, 1),
     schedule = "@daily",
     catchup=False,
+    max_active_runs=1,
+    template_searchpath = "/opt/airflow/sql",
     tags=["dwh", "etl", "postgres"],
 ) as dag:
     
@@ -22,7 +24,7 @@ with DAG(
     create_staging_tables = SQLExecuteQueryOperator(
         task_id="create_staging_tables",
         conn_id=POSTGRES_CONN_ID,
-        sql="/opt/airflow/sql/staging/create_staging_tables.sql",
+        sql="staging/create_staging_tables.sql",
     )
 
     load_staging = BashOperator(
@@ -33,25 +35,25 @@ with DAG(
     create_core_tables = SQLExecuteQueryOperator(
         task_id="create_core_tables",
         conn_id=POSTGRES_CONN_ID,
-        sql="/opt/airflow/sql/core/create_core_tables.sql",
+        sql="core/create_core_tables.sql",
     )
 
     load_core = SQLExecuteQueryOperator(
         task_id="load_core",
         conn_id=POSTGRES_CONN_ID,
-        sql="/opt/airflow/sql/core/load_core.sql",
+        sql="core/load_core_tables.sql",
     )
 
     build_marts = SQLExecuteQueryOperator(
         task_id="build_marts",
         conn_id=POSTGRES_CONN_ID,
-        sql="/opt/airflow/sql/marts/build_marts.sql",
+        sql="marts/create_marts.sql",
     )
 
     data_quality_checks = SQLExecuteQueryOperator(
         task_id="data_quality_checks",
         conn_id=POSTGRES_CONN_ID,
-        sql="/opt/airflow/sql/quality/data_quality_checks.sql",
+        sql="quality/data_quality_checks.sql",
     )
 
     (

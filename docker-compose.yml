@@ -19,7 +19,7 @@ services:
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: sqlite:////opt/airflow/airflow.db
       AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
       AIRFLOW__WEBSERVER__SECRET_KEY: sales_dwh_secret_key
-      AIRFLOW_CONN_SALES_DWH: postgresql+psycopg2://sales_user:sales_password@postgress:5432/sales_db
+      AIRFLOW_CONN_SALES_DWH: postgres://sales_user:sales_password@postgress:5432/sales_db
       AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_USERS: "admin:admin"
       AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS: "true"
     ports:

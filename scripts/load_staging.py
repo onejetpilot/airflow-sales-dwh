@@ -6,7 +6,7 @@ from sqlalchemy import create_engine
 BASE_DIR = Path(__file__).resolve().parents[1]
 RAW_DIR = BASE_DIR / 'data' / 'raw'
 
-DB_URL = "postgresql+psycopg2://sales_user:sales_password@localhost:5434/sales_db"
+DB_URL = "postgresql+psycopg2://sales_user:sales_password@postgress:5432/sales_db"
 
 def load_csv(file_name: str, table_name: str, engine) -> None:
     df = pd.read_csv(RAW_DIR / file_name)
