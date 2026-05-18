@@ -12,14 +12,16 @@ services:
      - postgres_data:/var/lib/postgresql/data
 
   airflow:
-    image: apache/airflow:2.9.3
+    image: apache/airflow:3.2.1
     container_name: sales_dwh_airflow
     environment:
       AIRFLOW__CORE__EXECUTOR: SequentialExecutor
-      AIRFLOW__CORE__SQL_ALCHEMY_CONN: sqlite:///opt/airflow/airflow.db
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: sqlite:////opt/airflow/airflow.db
       AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
       AIRFLOW__WEBSERVER__SECRET_KEY: sales_dwh_secret_key
       AIRFLOW_CONN_SALES_DWH: postgresql+psycopg2://sales_user:sales_password@postgress:5432/sales_db
+      AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_USERS: "admin:admin"
+      AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS: "true"
     ports:
       - "8080:8080"
     volumes:
@@ -29,15 +31,12 @@ services:
       - ./data:/opt/airflow/data
     command: >
       bash -c "
-        airflow db migrate &&
-        airflow users create
-        --username admin
-        --password admin
-        --firstname Mikhail
-        --lastname Razhin
-        --role Admin
-        --email admin@example.com || True &&
-        airflow webserver & airflow scheduler"
+        set -e
+        airflow db migrate
+        airflow dag-processor &
+        airflow api-server &
+        exec airflow scheduler
+      "
 
 volumes:
   postgres_data:
