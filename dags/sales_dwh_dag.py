@@ -1,7 +1,7 @@
 from datetime import datetime
 from airflow import DAG
 from airflow.operators.bash import BashOperator
-from airflow.providers.common.sql.operators.sql import SQLExecutiveQueryOperator
+from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
 
 POSTGRES_CONN_ID = 'sales_dwh'
 
@@ -19,7 +19,7 @@ with DAG(
         bash_command="python /opt/airflow/scripts/generate_data.py",
     )
 
-    create_staging_tables = SQLExecutiveQueryOperator(
+    create_staging_tables = SQLExecuteQueryOperator(
         task_id="create_staging_tables",
         conn_id=POSTGRES_CONN_ID,
         sql="/opt/airflow/sql/staging/create_staging_tables.sql",
@@ -30,25 +30,25 @@ with DAG(
         bash_command="python /opt/airflow/scripts/load_staging.py",
     )
 
-    create_core_tables = SQLExecutiveQueryOperator(
+    create_core_tables = SQLExecuteQueryOperator(
         task_id="create_core_tables",
         conn_id=POSTGRES_CONN_ID,
         sql="/opt/airflow/sql/core/create_core_tables.sql",
     )
 
-    load_core = SQLExecutiveQueryOperator(
+    load_core = SQLExecuteQueryOperator(
         task_id="load_core",
         conn_id=POSTGRES_CONN_ID,
         sql="/opt/airflow/sql/core/load_core.sql",
     )
 
-    build_marts = SQLExecutiveQueryOperator(
+    build_marts = SQLExecuteQueryOperator(
         task_id="build_marts",
         conn_id=POSTGRES_CONN_ID,
         sql="/opt/airflow/sql/marts/build_marts.sql",
     )
 
-    data_quality_checks = SQLExecutiveQueryOperator(
+    data_quality_checks = SQLExecuteQueryOperator(
         task_id="data_quality_checks",
         conn_id=POSTGRES_CONN_ID,
         sql="/opt/airflow/sql/quality/data_quality_checks.sql",
